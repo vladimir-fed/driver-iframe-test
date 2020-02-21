@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using OpenQA.Selenium;
 
 namespace ChromeDriverTest
 {
-	[TestClass]
+	[TestFixture]
 	public class ChromeDriverIframeTest : DriverTestBase
 	{
-		[TestMethod]
+		[Test]
 		public void ValueToReadShouldBe11AfterIframeReloaded()
 		{
 			Driver.Url = $"{BaseUrl}/frame";
@@ -18,7 +18,7 @@ namespace ChromeDriverTest
 			Assert.AreEqual(el.Text, "11");
 		}
 
-		[TestMethod]
+		[Test]
 		public void ShouldSwitchToFrameWithoutIssues()
 		{
 			Driver.Url = $"{BaseUrl}/frame";
@@ -28,8 +28,11 @@ namespace ChromeDriverTest
 			for (int i = 0; i < 1000; i++)
 			{
 				refreshButton.Click();
-				Driver.SwitchTo().Frame(frameElement);
-				Driver.SwitchTo().DefaultContent();
+				for (int j = 0; j < 10; j++)
+				{
+					Driver.SwitchTo().Frame(frameElement);
+					Driver.SwitchTo().DefaultContent();
+				}
 			}
 		}
 	}

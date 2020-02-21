@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
 
 namespace ChromeDriverTest
@@ -8,7 +8,7 @@ namespace ChromeDriverTest
 		public string BaseUrl => "https://driver-iframe-test.herokuapp.com";
 		public ChromeDriver Driver { get; private set; }
 
-		[TestInitialize]
+		[SetUp]
 		public void TestInit()
 		{
 			var service = ChromeDriverService.CreateDefaultService();
@@ -18,7 +18,7 @@ namespace ChromeDriverTest
 			Driver = new ChromeDriver(service);
 		}
 
-		[TestCleanup]
+		[TearDown]
 		public void TestCleanUp()
 		{
 			Driver.Quit();
