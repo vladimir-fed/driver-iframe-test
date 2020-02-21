@@ -1,30 +1,35 @@
-﻿using System;
-using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 
 namespace ChromeDriverTest
 {
 	[TestClass]
-	public class ChromeDriverIframeTest
+	public class ChromeDriverIframeTest : DriverTestBase
 	{
 		[TestMethod]
 		public void ValueToReadShouldBe11AfterIframeReloaded()
 		{
-			var driver = new ChromeDriver();
+			Driver.Url = $"{BaseUrl}/frame";
+			Driver.SwitchTo().Frame(0);
+			var next = Driver.FindElement(by: By.Id("next"));
+			next.Click();
+			var el = Driver.FindElement(by: By.Id("valueToRead"));
 
-			try
+			Assert.AreEqual(el.Text, "11");
+		}
+
+		[TestMethod]
+		public void ShouldSwitchToFrameWithoutIssues()
+		{
+			Driver.Url = $"{BaseUrl}/frame";
+			var frameElement = Driver.FindElement(By.Id("inlineFrameExample"));
+			var refreshButton = Driver.FindElement(By.Id("refreshFrame"));
+
+			for (int i = 0; i < 1000; i++)
 			{
-				driver.Url = "https://driver-iframe-test.herokuapp.com";
-				driver.SwitchTo().Frame(0);
-				var next = driver.FindElement(by: By.Id("next"));
-				next.Click();
-				var el = driver.FindElement(by: By.Id("valueToRead"));
-
-				Assert.AreEqual(el.Text, "11");
-			} finally {
-				driver.Quit();
+				refreshButton.Click();
+				Driver.SwitchTo().Frame(frameElement);
+				Driver.SwitchTo().DefaultContent();
 			}
 		}
 	}
