@@ -8,9 +8,13 @@ const html = `
 			title="Inline Frame Example"
 			width="300"
 			height="200"
-			src="/frame/page/10">
+			src='/frame/page/10'>
 		</iframe>
+		<button id='refreshFrame' onclick="document.querySelector('#inlineFrameExample').setAttribute('src', '/frame/page/' + window.number++)">Refresh</button>
 	</body>
+	<script>
+		window.number = 11;
+	</script>
 </html>
 `;
 
@@ -43,11 +47,11 @@ const requestListener = (req, res) => {
 		return res.end();
 	}
 
-	setTimeout(() => {
+	// setTimeout(() => {
 		const index = +match[1];
 		res.write(iframeHtml(index));
 		res.end();
-	}, 3000);
+	// }, 100);
 };
 
 module.exports = {
