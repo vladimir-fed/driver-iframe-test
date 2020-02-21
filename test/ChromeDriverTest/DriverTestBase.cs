@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.IO;
+
+using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
 
 namespace ChromeDriverTest
@@ -12,7 +14,7 @@ namespace ChromeDriverTest
 		public void TestInit()
 		{
 			var service = ChromeDriverService.CreateDefaultService();
-			service.LogPath = "chromedriver.log";
+			service.LogPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "chromedriver.log");
 			service.EnableVerboseLogging = true;
 
 			Driver = new ChromeDriver(service);
